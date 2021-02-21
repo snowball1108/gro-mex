@@ -56,7 +56,10 @@ frameHeader = fgets(fid);
 
 % Skip header if present
 if strfind(strtrim(frameHeader), 'pairwise')
-    fgets(fid); 
+    frame = fgets(fid); 
+    timestep = textscan(frame, 'frame %f');
+else
+    timestep = textscan(frameHeader, 'frame %f');
 end 
 
 % When end of file is reached, fgets will return -1
@@ -65,7 +68,6 @@ if (frameHeader == -1)
     return
 end
 
-timestep        = textscan(frameHeader, 'frame %f');
 pfx.timestep    = cell2mat(timestep);
 
 % Read chunks of data 
